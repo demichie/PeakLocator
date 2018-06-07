@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Mattia de’ Michieli Vitturi" />
+  <title>Flask python app test</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href= "{{ url_for('static',filename='styles/pandoc.css') }}" type="text/css" />
+
+    {{ result[0]|safe }}
+</head>
+<body>
+
+  <div id="header">
+<h1 class="title">PeakLocator 1.0</h1>
+<h2 class="author">by Mattia de’ Michieli Vitturi</h2>
+</div>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+     equationNumbers: {  autoNumber: "AMS"  },
+     extensions: ["AMSmath.js", "AMSsymbols.js", "autobold.js"]
+  }
+});
+</script>
+<script type="text/javascript" src=
+"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+This webapp computes and visualizes the common peaks of two different concentration maps. <br />
+
+
+A minimum of 2 files is required.
+
+
+<form method=post action="" enctype="multipart/form-data">
+{{ form.csrf_token }}
+<table>
+  {% for field in form %}
+    {% if field.name == 'csrf_token' %}
+       <tbody style="display:none">
+    {% endif %}
+
+
+    {% if ( field.name == 'filename1' or field.name == 'filename2' or field.name == 'filename3' or field.name == 'filename4'  or field.name == 'filename5' or field.name == 'filename6' or field.name == 'filename7' or field.name == 'filename8' or field.name == 'filename9'  or field.name == 'filename10') %}
+        <tr>
+        <td class="name">\( {{ field.name }} \) &nbsp;&nbsp;</td>
+        <td> {{ field(size=12) }} </td>
+        <td><ul class=errors>
+        {% if field.errors %}
+          {% for error in field.errors %}
+            <li><font color="red">{{ error }}</font></li>
+          {% endfor %}</ul></td>
+        {% endif %}
+    {% endif %}
+
+    {% if ( field.name == 'MinMax1' or field.name == 'MinMax2' or field.name == 'MinMax3' or field.name == 'MinMax4'  or field.name == 'MinMax5' or field.name == 'MinMax6' or field.name == 'MinMax7' or field.name == 'MinMax8' or field.name == 'MinMax9'  or field.name == 'MinMax10') %}
+        <td> {{ field }} </td>
+    {% endif %}
+
+    {% if ( field.name == 'sigma1' or field.name == 'sigma2' or field.name == 'sigma3' or field.name == 'sigma4'  or field.name == 'sigma5' or field.name == 'sigma6' or field.name == 'sigma7' or field.name == 'sigma8' or field.name == 'sigma9'  or field.name == 'sigma10') %}
+        <td> {{ field }} </td>
+        <tr style="border-bottom:1px solid black"><td colspan="100%"></td></tr>
+    {% endif %}
+  {% endfor %}
+
+  </tr>
+</table>
+<p><input type="submit" name="submit" value="Compute"><input type="submit" name="submit" value="Save"></form></p>
+
+
+
+<p>
+{% if result != None %}
+<!-- script and div elements for Bokeh plot -->
+{{ result[1]|safe }}
+{{ result[2]|safe }}
+
+Common peak area is {{ result[5]|safe }} m2.<br />
+
+Fitting index is {{ result[6]|safe }}.<br />
+
+
+The color represents the minimum normalized excess with respect to mean value for each dataset.<br />
+A value of 1.5 in a pixel, for examples, means that in that pixel each dataset has a value exceeding by at least 1.5 standard deviations the mean value (\(
+x_i - \mu_i \geq (1+0.5) \sigma_i, \hbox{ for } i\in [1,N]
+\)
+).<br />
+The grey area represents pixels with nodata value for some of the dataset.<br />
+
+The mean values are {{ result[7]|safe }}.<br />
+The standard deviations are {{ result[8]|safe }}.<br />
+
+{% endif %}
+</p>
+</body>
+</html>
+
